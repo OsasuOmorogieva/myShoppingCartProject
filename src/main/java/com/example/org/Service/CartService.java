@@ -22,8 +22,6 @@ public class CartService {
 	
 	CartItem cart = new CartItem();
 
-	//private List<Product> inventory = new ArrayList<>();
-	//private HashMap<String, Integer> cart = new HashMap<>();
 	
 	public List<CartItem> getCart() {
 		cartRepo.findAll();
@@ -115,7 +113,7 @@ public class CartService {
 			double totalTax =0;
 			double grandTotal =0;
 			StringBuilder receipt = new StringBuilder();
-			List<CartItem>cart = cartRepo.findByStatus(name);
+			List<CartItem>cart = cartRepo.findAll();
 			if(cart.isEmpty()) {
 				return "you can not generate reciept for empty cart. Please add product to cart"; 
 			}else {
@@ -164,7 +162,7 @@ public class CartService {
 				receipt.append("           Its all about the best quality         ");
 
 			}
-			
+			cartRepo.deleteAll();
 			 return receipt.toString();
 		}
 	}
