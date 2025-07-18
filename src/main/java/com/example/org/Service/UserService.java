@@ -5,16 +5,26 @@ import java.sql.Timestamp;
 import java.time.Instant;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.org.Repository.UserRepository;
 import com.example.org.modal.Users;
+import com.example.org.security.JWTService;
 
 @Service
 public class UserService {
 @Autowired
 UserRepository userRepo;
+
+@Autowired
+AuthenticationManager authManager;
+
+@Autowired
+JWTService jwtService;
 
 
 //@Autowired
@@ -37,6 +47,15 @@ public Users signup(Users user) {
 	userRepo.save(user);
 	//this.emailService.sendVerificationEmail(user);
 	return user;
+}
+
+public String verify(Users user) {
+	Authentication authentication =
+			authManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+	if(authentication.isAuthenticated()) {
+	return jwtService.generateToken(user.getUsername());
+	}
+	return "unable to authenticate User.";
 }
 
 //private void validateUserNameAndEmail(String username, String emailId) {
