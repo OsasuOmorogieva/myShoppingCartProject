@@ -24,6 +24,11 @@ public class ProductController {
 	@Autowired
 	private ProductService service;
 	
+	@GetMapping("/")
+	public ResponseEntity<String> welcome(){
+		return new ResponseEntity<>("Welcome to Best Store where BEST PRICE mets BEST QUALITY", HttpStatus.OK);
+	}
+	
 	@GetMapping("/product/{id}")
 	public ResponseEntity<Product> getProduct(@PathVariable int id){
 		Product product= service.getProduct(id);
