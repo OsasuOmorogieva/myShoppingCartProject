@@ -22,7 +22,7 @@ public class CartController {
 	@Autowired
 	private CartService service;
 	
-	@PostMapping("/products/addProduct")
+	@PostMapping("/cart/addProduct")
 	public ResponseEntity<?>addProductToCart(@RequestBody CartItem cartItem){
 		try {
 		String newProduct= service.addProductToCart(cartItem.getName(), cartItem.getQuantity());
@@ -32,7 +32,7 @@ public class CartController {
 		}
 	}
 	
-	@GetMapping("/products/cart")
+	@GetMapping("/cart")
 	public ResponseEntity<?> getCart(){
 		List<CartItem> productCart = service.getCart();
 		if (productCart.isEmpty()) {
@@ -42,7 +42,7 @@ public class CartController {
 		
 	}
 	}
-	@PostMapping("/products/removeProduct")
+	@PostMapping("/cart/removeProduct")
 	public ResponseEntity<String> removeFromCart(@RequestBody CartItem cartItem){
 		String removeItem = service.removeFromCart(cartItem.getName(), cartItem.getQuantity());
 		return new ResponseEntity<>(removeItem, HttpStatus.OK);
