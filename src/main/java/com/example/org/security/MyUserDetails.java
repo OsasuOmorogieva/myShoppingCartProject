@@ -1,6 +1,7 @@
 package com.example.org.security;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,10 +15,10 @@ public class MyUserDetails implements UserDetails{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Users user;
+	private Optional<Users> user;
 	
-	public MyUserDetails(Users user) {
-		this.user = user;
+	public MyUserDetails(Optional<Users> user2) {
+		this.user = user2;
 	}
 
 	
@@ -30,13 +31,13 @@ public class MyUserDetails implements UserDetails{
 	@Override
 	public String getPassword() {
 		
-		return this.user.getPassword();
+		return this.user.get().getPassword();
 	}
 
 	@Override
 	public String getUsername() {
 		
-		return this.user.getUsername();
+		return this.user.get().getUsername();
 	}
 
 	@Override

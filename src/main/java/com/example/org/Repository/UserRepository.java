@@ -9,7 +9,7 @@ import com.example.org.modal.Users;
 
 @Repository
 public interface UserRepository extends JpaRepository<Users, Integer> {
-	Users findByUsername(String username);
+	Optional<Users> findByUsername(String username);
 	Optional<Users>findByEmailId(String email);
 
 }

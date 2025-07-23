@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.org.Repository.UserRepository;
+import com.example.org.exception.domain.EmailExistException;
+import com.example.org.exception.domain.UserExistException;
 import com.example.org.modal.Users;
 import com.example.org.security.JWTService;
 
@@ -27,8 +29,8 @@ AuthenticationManager authManager;
 JWTService jwtService;
 
 
-//@Autowired
-//EmailService emailService;
+@Autowired
+EmailService emailService;
 
 
 private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
@@ -36,7 +38,7 @@ private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 public Users signup(Users user) {
 	user.setUsername(user.getUsername().toLowerCase());
 	user.setEmailId(user.getEmailId().toLowerCase());
-	//this.validateUserNameAndEmail(user.getUsername(),user.getEmailId());
+	this.validateUserNameAndEmail(user.getUsername(),user.getEmailId());
 	user.setEmailVerified(false);
 	user.setPassword(user.getPassword());
 	user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -45,7 +47,7 @@ public Users signup(Users user) {
 	user.setLastName(user.getLastName());
 	user.setPhone(user.getPhone());
 	userRepo.save(user);
-	//this.emailService.sendVerificationEmail(user);
+	this.emailService.sendVerificationEmail(user);
 	return user;
 }
 
@@ -58,12 +60,13 @@ public String verify(Users user) {
 	return "unable to authenticate User.";
 }
 
-//private void validateUserNameAndEmail(String username, String emailId) {
-//	this.userRepo.findByUsername(username).ifPresent(u-> {
-//		throw new UserExistException(String.format("Username already exists, %s", u.getUsername()));
-//	});
-//	this.userRepo.findByEmailId(emailId).ifPresent(u -> {
-//		throw new EmailExistException(String.format("Email already exists, %s", u.getEmailId()));
-//	});
-//}
+private void validateUserNameAndEmail(String username, String emailId) {
+	this.userRepo.findByUsername(username)
+	.ifPresent(u-> {
+		throw new UserExistException(String.format("Username already exists, %s", u.getUsername()));
+	});
+	this.userRepo.findByEmailId(emailId).ifPresent(u -> {
+		throw new EmailExistException(String.format("Email already exists, %s", u.getEmailId()));
+	});
+}
 }

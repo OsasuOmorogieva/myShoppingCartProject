@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore Spring Boot config files with secrets
+application.yml
+application.properties
+
+src/main/resources/application.yml
+
+
