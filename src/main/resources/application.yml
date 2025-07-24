@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: myShoppingCartProject
+  datasource:
+    url: jdbc:postgresql://localhost:5432/myShoppingCartProject
+    username: postgres
+    password: pg123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  mail:
+    username: osasuomo@yahoo.com
+    password: wdrl qpit htil njal
+    host: smtp.gmail.com
+    port: 587
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
