@@ -5,9 +5,9 @@ jwt:
   audience: myShoppingCartProject
   prefix: 'Bearer'
   excluded.urls: >
-      - /login
-      - /signup
-      - /passwordReset
+      - /user/login
+      - /user/signup
+      - /user/passwordReset
  
   
 # Client Configuration  
