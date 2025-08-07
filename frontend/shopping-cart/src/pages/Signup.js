@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import Input from '../components/Input'
 import Button from '../components/Button'
+import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
+  const navigate = useNavigate()
   // State to manage form inputs and errors
   const [formData, setFormData] = useState({
-    name: '',
+    fullname: '',
     email: '',
     password: '',
   })
   const [errors, setErrors] = useState({
-    name: '',
+    fullname: '',
     email: '',
     password: '',
   })
@@ -18,15 +20,16 @@ const Signup = () => {
   // Live validation logic
   const validateField = (name, value) => {
     switch (name) {
-      case 'name':
-        if (!value) return 'full name is required.'
+      case 'fullname':
+        if (!value) return 'Your full name is required.'
         return ''
       case 'email':
-        if (!value) return 'email is required.'
-        if (!/^\S+@\S+\.\S+$/.test(value)) return 'Email is invalid.'
+        if (!value) return 'An email is required.'
+        if (!/^\S+@\S+\.\S+$/.test(value))
+          return 'Please enter a valid email address'
         return ''
       case 'password':
-        if (!value) return 'Password is required.'
+        if (!value) return 'A password is required.'
         if (value.length < 6) return 'Password must be at least 6 characters.'
         return ''
       default:
@@ -36,21 +39,11 @@ const Signup = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-
     setFormData((prev) => ({ ...prev, [name]: value }))
 
     // Validate this specific field
     const error = validateField(name, value)
     setErrors((prev) => ({ ...prev, [name]: error }))
-
-    // Also re-validate confirmPassword if password is changing
-    if (name === 'password') {
-      const confirmPasswordError = validateField(
-        'confirmPassword',
-        formData.confirmPassword
-      )
-      setErrors((prev) => ({ ...prev, confirmPassword: confirmPasswordError }))
-    }
   }
 
   const handleSubmit = (e) => {
@@ -58,12 +51,9 @@ const Signup = () => {
 
     // Final validation before submission
     const newErrors = {
+      fullname: validateField('fullname', formData.fullname),
       email: validateField('email', formData.email),
       password: validateField('password', formData.password),
-      confirmPassword: validateField(
-        'confirmPassword',
-        formData.confirmPassword
-      ),
     }
 
     setErrors(newErrors)
@@ -71,9 +61,15 @@ const Signup = () => {
     const hasErrors = Object.values(newErrors).some((error) => error)
     if (!hasErrors) {
       console.log('Form Submitted', formData)
+      navigate('/login')
       // Add your submit logic here (e.g., API call)
     }
   }
+
+  // Logic for create account button color change
+  const hasErrors =
+    Object.values(errors).some((error) => error) ||
+    Object.values(formData).some((val) => val.trim() === '')
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-white">
       <h2 className="text-2xl font-semibold text-gray-800 text-center mb-1">
@@ -85,10 +81,10 @@ const Signup = () => {
       <Input
         labelTitle="Full Name"
         type="name"
-        name="name"
-        value={formData.name}
+        name="fullname"
+        value={formData.fullname}
         onChange={handleChange}
-        error={errors.name}
+        error={errors.fullname}
       />
       <Input
         labelTitle="Email"
@@ -115,8 +111,9 @@ const Signup = () => {
       <div className="py-5">
         <Button
           buttonLabel="Create an Account"
-          buttonColor="bg-[#CCCCCC]"
+          buttonColor={!hasErrors ? 'bg-[#1A1A1A]' : 'bg-[#CCCCCC]'}
           textColor="text-[#FFFFFF]"
+          type="submit"
         />
       </div>
 

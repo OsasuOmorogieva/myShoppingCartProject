@@ -15,7 +15,7 @@ const Input = ({ labelTitle, type = 'text', name, value, onChange, error }) => {
         className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 ${
           error
             ? ' border-red-500 focus:ring-red-500'
-            : 'border-gray-300 focus:ring-blue-500'
+            : 'border-[#0C9409] focus:ring-blue-500'
         }`}
       />
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
